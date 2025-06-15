@@ -1,11 +1,11 @@
-
+import MovieCard from "./components/movie-card";
 import './App.css'
 
 function App() {
 
   return (
     <div>
-      <h1>Welcome to MovieBox</h1>
+      <MovieCard movie={{title: "GOT", releaseDate: 2019, url: "https://netlflix.com"}} />
     </div>
   )
 }
