@@ -1,11 +1,11 @@
-import MovieCard from "./components/movie-card";
 import './App.css'
+import Home from "./pages/Home";
 
 function App() {
 
   return (
     <div>
-      <MovieCard movie={{title: "GOT", releaseDate: 2019, url: "https://netlflix.com"}} />
+      <Home/>
     </div>
   )
 }
