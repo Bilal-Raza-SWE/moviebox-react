@@ -16,7 +16,7 @@ function MovieCard({ movie }) {
     <div className="movie-card">
       <div className="movie-poster">
         <img src={movie.url} alt={movie.title} />
-        <button className="fvrt-btn" onClick={fvrtBtnClick}>
+        <button className="fvrt-btn" onClick={fvrtBtnClick} title="Add to favorites.">
           {isFavorite ? "♥" : "♡"}
         </button>
       </div>
