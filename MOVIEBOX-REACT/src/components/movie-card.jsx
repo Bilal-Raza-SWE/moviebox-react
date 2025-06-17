@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../css/movie-card.css"
 function MovieCard({ movie }) {
   const [isFavorite, setFavorite] = useState(false);
 
