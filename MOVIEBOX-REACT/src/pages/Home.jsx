@@ -1,43 +1,61 @@
 import { useState, useEffect } from "react";
-import MovieCard from "../components/movie-card";
-import "../css/home.css";
 import { getPopularMovies, searchMovies } from "../services/api.js";
+import MovieCard from "../components/movie-card";
+import Loader from "../components/loader.jsx";
+import Error from "../components/error.jsx";
+import "../css/home.css";
 
 function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [loader, setLoader] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  const mapMovieData = (movie) => ({
+    id: movie.id,
+    title: movie.title,
+    releaseDate: movie.release_date,
+    url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+    description: movie.overview,
+  });
 
   useEffect(() => {
     const laodPopularMovies = async () => {
       try {
-        setLoader(true);
+        setLoading(true);
         setError(null);
         const response = await getPopularMovies();
-        const mappedMovies = response.map((movie) =>({
-          id: movie.id,
-          title: movie.title,
-          releaseDate: movie.release_date,
-          url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-          description: movie.overview
-        }))
+        const mappedMovies = response.map(mapMovieData);
         setMovies(mappedMovies);
       } catch (error) {
         console.log(error);
-        setError("Failed to laod Movies...");
+        setError(true);
       } finally {
-        setLoader(false);
+        setLoading(false);
       }
     };
 
     laodPopularMovies();
   }, []);
 
-  function handleSearch(e) {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    alert(searchQuery);
-  }
+    if (!searchQuery.trim()) return;
+    if (loading) return;
+    setLoading(true);
+
+    try {
+      const response = await searchMovies(searchQuery);
+      const mappedMovies = response.map(mapMovieData);
+      setMovies(mappedMovies);
+      setError(false);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -57,20 +75,38 @@ function Home() {
 
       {error && (
         <div
-          className="error-message"
-          style={{ color: "red", textAlign: "center", margin: "1em 0" }}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "30vh",
+          }}
         >
-          {error}
+          <Error />
         </div>
       )}
-      <div className="movies-grid">
-        {movies.map(
-          (movie) =>
-            movie.title.toLowerCase().startsWith(searchQuery) && (
-              <MovieCard movie={movie} key={movie.id} />
-            )
-        )}
-      </div>
+
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "50vh",
+          }}
+        >
+          <Loader />
+        </div>
+      ) : (
+        <div className="movies-grid">
+          {movies.map(
+            (movie) =>
+              movie.title.toLowerCase().startsWith(searchQuery) && (
+                <MovieCard movie={movie} key={movie.id} />
+              )
+          )}
+        </div>
+      )}
     </>
   );
 }
