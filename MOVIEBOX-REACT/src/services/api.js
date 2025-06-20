@@ -9,7 +9,7 @@ const getPopularMovies = async() => {
 
 
 const searchMovies = async(query) => {
-    const response = await fetch(`${BASE_URL}/search/movie?include_adult=true&api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
+    const response = await fetch(`${BASE_URL}/search/movie?include_adult=false&api_key=${API_KEY}&query=${encodeURIComponent(query)}`);
     const data = await response.json();
     return data.results;
 }
