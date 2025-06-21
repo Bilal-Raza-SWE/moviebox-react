@@ -1,18 +1,29 @@
-import "../css/favorite.css"
+import { useState } from "react";
+import "../css/favorite.css";
 
-function Favorites(){
+function Favorites() {
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
 
+  return (
+    <div className="favorites-container">
+      <h1 className="favorites-title">My Favorite Movies</h1>
 
-    return(
-        <div>
-            <h1>Nothing in favorites</h1>
-            <div className="movie-card">
-              <img src="movie.jpg" alt="Movie Title" />
-              <h3>Movie Title</h3>
-              <p>Movie description...</p>
-            </div>
+      {favoriteMovies.length === 0 ? (
+        <div className="empty-state">
+          <div className="no-favorites-icon">🎬</div>
+          <h2>There are no favorite movies</h2>
+          <p>Start adding movies to your favorites to see them here!</p>
+          <div className="empty-action">
+            <a href="/home" className="browse-movies-btn">
+              Browse Movies
+            </a>
+          </div>
         </div>
-    )
+      ) : (
+        <div></div>
+      )}
+    </div>
+  );
 }
 
-export default Favorites
+export default Favorites;
