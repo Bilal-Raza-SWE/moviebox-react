@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useMovieContext } from "../context/MovieContext";
+import MovieCard from "../components/movie-card";
 import "../css/favorite.css";
 
 function Favorites() {
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const { favorites } = useMovieContext();
 
   return (
     <div className="favorites-container">
       <h1 className="favorites-title">My Favorite Movies</h1>
 
-      {favoriteMovies.length === 0 ? (
+      {favorites.length === 0 ? (
         <div className="empty-state">
           <div className="no-favorites-icon">🎬</div>
           <h2>There are no favorite movies</h2>
@@ -20,7 +21,11 @@ function Favorites() {
           </div>
         </div>
       ) : (
-        <div></div>
+        <div className="favorites-grid">
+          {favorites.map((movie) => (
+            <MovieCard movie={movie} key={movie.id} />
+          ))}
+        </div>
       )}
     </div>
   );
