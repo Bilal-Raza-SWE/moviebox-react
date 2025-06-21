@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useMovieContext } from "../context/MovieContext"
 import "../css/movie-card.css"
+
 function MovieCard({ movie }) {
-  const [isFavorite, setFavorite] = useState(false);
+  const { isFvrt, addToFvrts, removeFromFvrts } = useMovieContext(); 
+  const favorite = isFvrt(movie.id);
 
   function fvrtBtnClick() {
-    if (isFavorite) {
-      alert(`Movie: ${movie.title} removed from the favorites list`);
-      setFavorite(false);
+    if (favorite) {
+      // alert(`Movie: ${movie.title} removed from the favorites list`);
+      removeFromFvrts(movie.id);
     } else {
-      alert(`Movie: ${movie.title} added to the favorites list`);
-      setFavorite(true);
+      // alert(`Movie: ${movie.title} added to the favorites list`);
+      addToFvrts(movie);
     }
   }
 
@@ -18,7 +20,7 @@ function MovieCard({ movie }) {
       <div className="movie-poster">
         <img src={movie.url} alt={movie.title} />
         <button className="fvrt-btn" onClick={fvrtBtnClick} title="Add to favorites.">
-          {isFavorite ? "♥" : "♡"}
+          {favorite ? "♥" : "♡"}
         </button>
       </div>
       <div>
