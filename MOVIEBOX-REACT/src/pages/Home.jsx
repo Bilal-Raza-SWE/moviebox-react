@@ -10,6 +10,7 @@ function Home() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [popularMovies, setPopularMovies] = useState([]);
 
   const mapMovieData = (movie) => ({
     id: movie.id,
@@ -27,6 +28,7 @@ function Home() {
         const response = await getPopularMovies();
         const mappedMovies = response.map(mapMovieData);
         setMovies(mappedMovies);
+        setPopularMovies(mappedMovies);
       } catch (error) {
         console.log(error);
         setError(true);
@@ -38,9 +40,20 @@ function Home() {
     laodPopularMovies();
   }, []);
 
+  const handleInputChange = (e)=>{
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    if(value.trim() === ""){
+      setMovies(popularMovies);
+    }
+  }
+
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
+    if (!searchQuery.trim()) {
+      setMovies(popularMovies);
+    }
     if (loading) return;
     setLoading(true);
 
@@ -65,7 +78,7 @@ function Home() {
             type="text"
             placeholder="Search for movies..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleInputChange}
           />
           <button className="search-btn" type="submit">
             Search
@@ -99,12 +112,18 @@ function Home() {
         </div>
       ) : (
         <div className="movies-grid">
-          {movies.map(
+          {/* Logic to filter movies based on search query */}
+          {/* {movies.map(
             (movie) =>
               movie.title.toLowerCase().startsWith(searchQuery) && (
                 <MovieCard movie={movie} key={movie.id} />
               )
-          )}
+          )} */}
+
+
+          {movies.map((movie)=>(
+            <MovieCard movie={movie} key = {movie.id} />
+          ))}
         </div>
       )}
     </>
