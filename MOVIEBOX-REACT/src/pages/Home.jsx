@@ -23,7 +23,7 @@ function Home() {
     const laodPopularMovies = async () => {
       try {
         setLoading(true);
-        setError(null);
+        setError(false);
         const response = await getPopularMovies();
         const mappedMovies = response.map(mapMovieData);
         setMovies(mappedMovies);
