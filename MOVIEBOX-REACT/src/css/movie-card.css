@@ -36,7 +36,7 @@
   top: 12px;
   right: 12px;
   background: rgba(255, 255, 255, 0.9);
-  border: none;
+  border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -47,12 +47,31 @@
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(4px);
+  
+  /* Default state - empty heart (not favorited) */
+  color: #6b7280; /* Gray color for empty heart */
 }
 
 .fvrt-btn:hover {
   background: rgba(255, 255, 255, 1);
   transform: scale(1.1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  
+  /* Keep gray when not favorited and hovered */
+  color: #4b5563; /* Slightly darker gray on hover */
+}
+
+/* When favorited - red heart */
+.fvrt-btn[data-favorited="true"] {
+  color: #ef4444; /* Red color when favorited */
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.fvrt-btn[data-favorited="true"]:hover {
+  color: #dc2626; /* Dark red when favorited and hovered */
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
 .movie-card > div:last-child {
